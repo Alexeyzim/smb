@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
     # --- VM with Main.host Server ---
   config.vm.define "main" do |main|
-    main.vm.box = "~/VirtualBox VMs/box/CentOS7.box"
+    main.vm.box = "~/vagrantKB/CentOS7.box"
     main.vm.synced_folder '.', '/vagrant'
   	#main.vm.box = "centos/7"
     main.vm.hostname = 'main.host'
