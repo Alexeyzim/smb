@@ -61,7 +61,7 @@ systemctl restart smb
 systemctl restart nmb
 
 #Settings of firewalld ang selinux
-#Firewalld
+##Firewalld
 firewall-cmd --permanent --add-port=53/tcp
 firewall-cmd --permanent --add-port=53/udp
 firewall-cmd --permanent --add-port=88/tcp
@@ -84,7 +84,7 @@ firewall-cmd --permanent --add-port=3269/tcp
 firewall-cmd --permanent --add-port=5353/tcp
 firewall-cmd --permanent --add-port=5353/udp
 systemctl restart firewalld
-#Selinux
+##Selinux
 setsebool -P samba_domain_controller on
 setsebool -P samba_enable_home_dirs on
 chcon -t samba_share_t /var/lib/samba/netlogon
