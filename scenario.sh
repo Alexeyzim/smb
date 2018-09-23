@@ -10,13 +10,14 @@ systemctl start ntpd
 yum install wget whois net-tools zip unzip -y
 
 #yum install openldap openldap-clients openldap-servers openldap nss-pam-ldapd -y
-yum install samba-common samba samba-client -y
+yum install samba-common samba samba-client deltarpm -y
 cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 cp /vagrant/smb.conf /etc/samba/smb.conf
 
 systemctl start smb
 systemctl start nmb
-
+systemctl enable smb
+systemctl enable nmb
 #Create groups
 groupadd -g 200 machine
 groupadd -g 207 Domain_Guests
@@ -33,6 +34,7 @@ net groupmap add rid=512 ntgroup="Domain Admins" unixgroup=Domain_Admins
 cp -R /vagrant/netlogon /var/lib/samba/
 chmod -R 755 /var/lib/samba/netlogon
 mkdir -m 0777 /var/lib/samba/mailbox
+mkdir -m 0777 /var/lib/samba/cashbox
 mkdir -m 0777 /var/lib/samba/profiles
 mkdir -m 0777 /var/lib/samba/userbox
 mkdir -m 0777 /var/lib/samba/opt
@@ -55,13 +57,13 @@ ptest2=$(cat /vagrant/passwd/test2)
 usermod -g Domain_Admins root
 net sam rights grant "Domain Admins" SeMachineAccountPrivilege SeTakeOwnershipPrivilege SeBackupPrivilege SeRestorePrivilege SeRemoteShutdownPrivilege SePrintOperatorPrivilege SeAddUsersPrivilege SeDiskOperatorPrivilege -Uroot%proot
 
-systemctl enable smb.service
-systemctl enable nmb.service
 systemctl restart smb
 systemctl restart nmb
 
 #Settings of firewalld ang selinux
 ##Firewalld
+firewall-cmd --add-service samba
+firewall-cmd --add-service samba --permanent
 firewall-cmd --permanent --add-port=53/tcp
 firewall-cmd --permanent --add-port=53/udp
 firewall-cmd --permanent --add-port=88/tcp
