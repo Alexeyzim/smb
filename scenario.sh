@@ -61,5 +61,36 @@ systemctl restart smb
 systemctl restart nmb
 
 #Settings of firewalld ang selinux
-systemctl disable firewalld
-SELINUX=disabled
+#Firewalld
+firewall-cmd --permanent --add-port=53/tcp
+firewall-cmd --permanent --add-port=53/udp
+firewall-cmd --permanent --add-port=88/tcp
+firewall-cmd --permanent --add-port=88/udp
+firewall-cmd --permanent --add-port=135/tcp
+firewall-cmd --permanent --add-port=137/tcp
+firewall-cmd --permanent --add-port=137/udp
+firewall-cmd --permanent --add-port=138/udp
+firewall-cmd --permanent --add-port=139/tcp
+firewall-cmd --permanent --add-port=389/tcp
+firewall-cmd --permanent --add-port=389/udp
+firewall-cmd --permanent --add-port=445/tcp
+firewall-cmd --permanent --add-port=464/tcp
+firewall-cmd --permanent --add-port=464/udp
+firewall-cmd --permanent --add-port=636/tcp
+firewall-cmd --permanent --add-port=1024-5000/tcp
+firewall-cmd --permanent --add-port=1024-5000/udp
+firewall-cmd --permanent --add-port=3268/tcp
+firewall-cmd --permanent --add-port=3269/tcp
+firewall-cmd --permanent --add-port=5353/tcp
+firewall-cmd --permanent --add-port=5353/udp
+systemctl restart firewalld
+#Selinux
+setsebool -P samba_domain_controller on
+setsebool -P samba_enable_home_dirs on
+chcon -t samba_share_t /var/lib/samba/netlogon
+chcon -t samba_share_t /var/lib/samba/profiles
+chcon -t samba_share_t /var/lib/samba/userbox
+chcon -t samba_share_t /var/lib/samba/cashbox
+chcon -t samba_share_t /var/lib/samba/mailbox
+chcon -t samba_share_t /var/lib/samba/opt
+chcon -t samba_share_t /var/lib/samba/post
