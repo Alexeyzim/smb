@@ -8,6 +8,12 @@ ntpdate pool.ntp.org
 systemctl enable ntpd
 systemctl start ntpd
 yum install wget whois net-tools zip unzip deltarpm -y
+
+#main editor
+export EDITOR=mcedit
+
+#yum install openldap openldap-clients openldap-servers openldap nss-pam-ldapd -y
+#yum install samba-tools samba-common samba samba-client -y
 yum install samba* -y
 cp /etc/samba/smb.conf /etc/samba/smb.conf.bak
 cp /vagrant/smb.conf /etc/samba/smb.conf
@@ -16,9 +22,6 @@ systemctl start smb
 systemctl start nmb
 systemctl enable smb
 systemctl enable nmb
-#main editor
-export EDITOR=mcedit
-
 #Create groups
 groupadd -g 200 machine
 groupadd -g 207 Domain_Guests
@@ -33,62 +36,112 @@ net groupmap add rid=512 ntgroup="Domain Admins" unixgroup=Domain_Admins
 #Create Samba Dirs
 #chmod -R 777 /var/lib/samba/
 cp -R /vagrant/netlogon /var/lib/samba/
-chmod -R 755 /var/lib/samba/netlogon
-mkdir -m 0777 /var/lib/samba/mailbox
-mkdir -m 0777 /var/lib/samba/cashbox
-mkdir -m 0777 /var/lib/samba/profiles
-mkdir -m 0777 /var/lib/samba/userbox
-mkdir -m 0777 /var/lib/samba/opt
-mkdir -m 0777 /var/lib/samba/post
+chmod -R 755 /var/lib/samba/netlogon   
+mkdir -m 755 /var/lib/samba/{mailbox,cashbox,profiles,userbox,opt,post}
+#mkdir -m 755 /var/lib/samba/cashbox
+#mkdir -m 755 /var/lib/samba/profiles
+#mkdir -m 755 /var/lib/samba/userbox
+#mkdir -m 755 /var/lib/samba/opt
+#mkdir -m 755 /var/lib/samba/post
 
 #Create Machine accounts
-smbpasswd -m -a arc$
-smbpasswd -m -a designer$
-smbpasswd -m -a fin1$
-smbpasswd -m -a fin2$
-smbpasswd -m -a fin3$
-smbpasswd -m -a fin4$
-smbpasswd -m -a finrem$
-smbpasswd -m -a hr_comp$
-smbpasswd -m -a ironfelix$
-smbpasswd -m -a keracomp_boss$
-smbpasswd -m -a keracomp_buh$
-smbpasswd -m -a keracomp_buh1$
-smbpasswd -m -a keracomp_buh2$
-smbpasswd -m -a keracomp_buh3$
-smbpasswd -m -a keracomp_cash$
-smbpasswd -m -a keracomp-dir$
-smbpasswd -m -a keracomp-dir1$
-smbpasswd -m -a logist$
-smbpasswd -m -a note1$
-smbpasswd -m -a opt1$
-smbpasswd -m -a opt3$
-smbpasswd -m -a opt4$
-smbpasswd -m -a opt5$
-smbpasswd -m -a opt6$
-smbpasswd -m -a opt7$
-smbpasswd -m -a opt8$
-smbpasswd -m -a postach_import$
-smbpasswd -m -a postach_plitka$
-smbpasswd -m -a postach_import$
-smbpasswd -m -a project$
-smbpasswd -m -a project1$
-smbpasswd -m -a reklamacomp$
-smbpasswd -m -a reklamacomp1$
-smbpasswd -m -a reklamacomp2$
-smbpasswd -m -a rozdribcomp$
-smbpasswd -m -a rozdribcomp1$
-smbpasswd -m -a rozdribcomp2$
-smbpasswd -m -a rozdribcomp3$
-smbpasswd -m -a rozdribcomp4$
-smbpasswd -m -a store_comp$
-smbpasswd -m -a vmxp$
-smbpasswd -m -a zal_plitka$
-smbpasswd -m -a zal_plitka1$
-smbpasswd -m -a zal_plitka2$
-smbpasswd -m -a zal_plitka3$
-smbpasswd -m -a zal_santech$
-smbpasswd -m -a zal_santech1$
+for i in arc$ \
+designer$ \
+fin1$ \
+fin2$ \
+fin3$ \
+fin4$ \
+finrem$ \
+hr_comp$ \
+ironfelix$ \
+keracomp_boss$ \
+keracomp_buh$ \
+keracomp_buh1$ \
+keracomp_buh2$ \
+keracomp_buh3$ \
+keracomp_cash$ \
+keracomp-dir$ \
+keracomp-dir1$ \
+logist$ \
+note1$ \
+opt1$ \
+opt3$ \
+opt4$ \
+opt5$ \
+opt6$ \
+opt7$ \
+opt8$ \
+postach_import$ \
+postach_plitka$ \
+postach_import$ \
+project$ \
+project1$ \
+reklamacomp$ \
+reklamacomp1$ \
+reklamacomp2$ \
+rozdribcomp$ \
+rozdribcomp1$ \
+rozdribcomp2$ \
+rozdribcomp3$ \
+rozdribcomp4$ \
+store_comp$ \
+vmxp$ \
+zal_plitka$ \
+zal_plitka1$ \
+zal_plitka2$ \
+zal_plitka3$ \
+zal_santech$ \
+zal_santech1$;
+do smbpasswd -m -a $i
+done
+
+#smbpasswd -m -a arc$
+#smbpasswd -m -a designer$
+#smbpasswd -m -a fin1$
+#smbpasswd -m -a fin2$
+#smbpasswd -m -a fin3$
+#smbpasswd -m -a fin4$
+#smbpasswd -m -a finrem$
+#smbpasswd -m -a hr_comp$
+#smbpasswd -m -a ironfelix$
+#smbpasswd -m -a keracomp_boss$
+#smbpasswd -m -a keracomp_buh$
+#smbpasswd -m -a keracomp_buh1$
+#smbpasswd -m -a keracomp_buh2$
+#smbpasswd -m -a keracomp_buh3$
+#smbpasswd -m -a keracomp_cash$
+#smbpasswd -m -a keracomp-dir$
+#smbpasswd -m -a keracomp-dir1$
+#smbpasswd -m -a logist$
+#smbpasswd -m -a note1$
+#smbpasswd -m -a opt1$
+#smbpasswd -m -a opt3$
+#smbpasswd -m -a opt4$
+#smbpasswd -m -a opt5$
+#smbpasswd -m -a opt6$
+#smbpasswd -m -a opt7$
+#smbpasswd -m -a opt8$
+#smbpasswd -m -a postach_import$
+#smbpasswd -m -a postach_plitka$
+#smbpasswd -m -a postach_import$
+#smbpasswd -m -a project$
+#smbpasswd -m -a project1$
+#smbpasswd -m -a reklamacomp$
+#smbpasswd -m -a reklamacomp1$
+#smbpasswd -m -a reklamacomp2$
+#smbpasswd -m -a rozdribcomp$
+#smbpasswd -m -a rozdribcomp1$
+#smbpasswd -m -a rozdribcomp2$
+#smbpasswd -m -a rozdribcomp3$
+#smbpasswd -m -a rozdribcomp4$
+#smbpasswd -m -a store_comp$
+#smbpasswd -m -a vmxp$
+#smbpasswd -m -a zal_plitka$
+#smbpasswd -m -a zal_plitka1$
+#smbpasswd -m -a zal_plitka2$
+#smbpasswd -m -a zal_plitka3$
+#smbpasswd -m -a zal_santech$
+#smbpasswd -m -a zal_santech1$
 
 #Create User accounts
 proot=$(cat /vagrant/passwd/root)
@@ -208,11 +261,15 @@ pvickos=$(cat /vagrant/passwd/vickos)
 (echo $ptech; echo $ptech) | smbpasswd -s -a tech
 (echo $pvickos; echo $pvickos) | smbpasswd -s -a vickos
 
+#Color for vagrant user
+echo PS1="'\[\e[1;33m\]\u\[\e[1;34m\]@\[\033[1;33m\]\h \[\e[1;34m\]\w\[\e[m\] \[\e[1;34m\]\$\[\e[m\] \[\e[1;37m\]'" >>/home/vagrant/.bashrc
+
 #Add root to Domain Admins group with all rights
 usermod -g Domain_Admins root
-net sam rights grant "Domain Admins" SeMachineAccountPrivilege SeTakeOwnershipPrivilege SeBackupPrivilege SeRestorePrivilege SeRemoteShutdownPrivilege SePrintOperatorPrivilege SeAddUsersPrivilege SeDiskOperatorPrivilege -Uroot%proot
-
+net sam rights grant "Domain Admins" SeMachineAccountPrivilege SeTakeOwnershipPrivilege SeBackupPrivilege SeRestorePrivilege SeRemoteShutdownPrivilege SePrintOperatorPrivilege SeAddUsersPrivilege SeDiskOperatorPrivilege -Uroot%$proot
+#Add the SAMBA server to his domain
 net rpc join -Uroot%$proot
+
 systemctl restart smb
 systemctl restart nmb
 
